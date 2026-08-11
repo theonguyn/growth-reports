@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PrepEdu — Growth Reports</title>
+<style>
+  :root{
+    --bg:#F4F6F9; --card:#fff; --border:#E3E8EF; --hair:#EFF2F6;
+    --navy:#16324F; --navy-soft:#EDF3FA; --navy-line:#D2E1F0;
+    --ink:#12202F; --muted:#5C6B7C; --faint:#8494A5;
+    --sidebar-w:248px; --topbar-h:52px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    display:grid; grid-template-columns:var(--sidebar-w) 1fr; grid-template-rows:100vh;
+    overflow:hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  aside{
+    background:var(--card); border-right:1px solid var(--border);
+    display:flex; flex-direction:column; min-height:0;
+  }
+  .brand{padding:18px 18px 14px; border-bottom:1px solid var(--hair)}
+  .brand .n{font-size:15px; font-weight:700; color:var(--navy); letter-spacing:-.01em}
+  .brand .s{font-size:11.5px; color:var(--faint); margin-top:2px}
+  .side-lbl{
+    font-size:10.5px; font-weight:700; letter-spacing:.11em; text-transform:uppercase;
+    color:var(--faint); padding:16px 18px 7px;
+  }
+  .list{overflow-y:auto; flex:1; padding:0 10px 18px; min-height:0}
+  .rep{
+    display:block; width:100%; text-align:left; cursor:pointer;
+    background:transparent; border:1px solid transparent; border-radius:8px;
+    padding:9px 11px; margin-bottom:3px; font:inherit; color:var(--ink);
+    transition:background .12s, border-color .12s;
+  }
+  .rep:hover{background:var(--bg)}
+  .rep .d{display:block; font-size:13.5px; font-weight:620; font-variant-numeric:tabular-nums}
+  .rep .m{display:block; font-size:11.5px; color:var(--muted); margin-top:1px; line-height:1.35}
+  .rep[aria-current="true"]{background:var(--navy-soft); border-color:var(--navy-line)}
+  .rep[aria-current="true"] .d{color:var(--navy)}
+  .rep:focus-visible,.tb:focus-visible{outline:2px solid var(--navy); outline-offset:2px}
+
+  /* ── MAIN ── */
+  main{display:flex; flex-direction:column; min-width:0; min-height:0}
+  nav{
+    height:var(--topbar-h); flex:none; background:var(--card);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:stretch; gap:2px; padding:0 10px;
+    overflow-x:auto; scrollbar-width:thin;
+  }
+  .tb{
+    flex:none; display:inline-flex; align-items:center; gap:7px;
+    background:transparent; border:0; border-bottom:2.5px solid transparent;
+    padding:0 13px; font:inherit; font-size:13.5px; font-weight:560;
+    color:var(--muted); cursor:pointer; white-space:nowrap;
+    transition:color .12s, border-color .12s;
+  }
+  .tb:hover{color:var(--ink)}
+  .tb[aria-selected="true"]{color:var(--navy); font-weight:660; border-bottom-color:var(--navy)}
+  .pill{
+    font-size:10.5px; font-weight:700; padding:1.5px 6px; border-radius:99px;
+    background:var(--navy-soft); color:var(--navy); font-variant-numeric:tabular-nums;
+  }
+  .frame-wrap{flex:1; min-height:0; position:relative}
+  iframe{width:100%; height:100%; border:0; display:block; background:var(--bg)}
+  .empty{
+    position:absolute; inset:0; display:grid; place-content:center; text-align:center;
+    color:var(--faint); font-size:14px; gap:6px;
+  }
+  .empty[hidden]{display:none}
+
+  @media (max-width:820px){
+    body{grid-template-columns:1fr; grid-template-rows:auto auto 1fr}
+    aside{border-right:0; border-bottom:1px solid var(--border)}
+    .brand{padding-bottom:10px}
+    .side-lbl{display:none}
+    .list{display:flex; gap:6px; padding:10px; overflow-x:auto; flex:none}
+    .rep{width:auto; flex:none; white-space:nowrap}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<aside>
+  <div class="brand">
+    <div class="n">Growth Reports</div>
+    <div class="s">PrepEdu · Seeding &amp; Campaign</div>
+  </div>
+  <div class="side-lbl">Kỳ báo cáo</div>
+  <div class="list" id="list"></div>
+</aside>
+
+<main>
+  <nav id="tabs" role="tablist" aria-label="Mục trong báo cáo"></nav>
+  <div class="frame-wrap">
+    <iframe id="frame" title="Nội dung báo cáo"></iframe>
+    <div class="empty" id="empty" hidden>
+      <div>Chưa chọn báo cáo nào</div>
+    </div>
+  </div>
+</main>
+
+<script>
+const listEl  = document.getElementById('list');
+const tabsEl  = document.getElementById('tabs');
+const frame   = document.getElementById('frame');
+const emptyEl = document.getElementById('empty');
+
+let REPORTS = [];
+let cur = null;          // báo cáo đang mở
+let curTab = null;
+
+/* Report con tự quản tab của nó qua location.hash (đã có sẵn hashchange listener).
+   Shell chỉ đổi hash của iframe, không cần đụng vào code report. */
+function openReport(rep, tabId, {force=false}={}){
+  if(!rep) return;
+  const tab = rep.tabs.some(t=>t.id===tabId) ? tabId : rep.tabs[0].id;
+
+  if(force || cur !== rep){
+    cur = rep;
+    frame.src = rep.path + '#' + tab;
+  }else if(tab !== curTab){
+    try{ frame.contentWindow.location.hash = tab; }
+    catch(_){ frame.src = rep.path + '#' + tab; }
+  }
+  curTab = tab;
+
+  renderTabs();
+  markSidebar();
+  const want = '#' + rep.date + '/' + tab;
+  if(location.hash !== want) history.replaceState(null,'',want);
+  document.title = rep.label + ' — Growth Report';
+}
+
+function renderSidebar(){
+  listEl.innerHTML = '';
+  for(const rep of REPORTS){
+    const b = document.createElement('button');
+    b.className = 'rep';
+    b.type = 'button';
+    b.innerHTML = '<span class="d"></span><span class="m"></span>';
+    b.querySelector('.d').textContent = rep.label;
+    b.querySelector('.m').textContent = rep.sub || '';
+    b.dataset.date = rep.date;
+    b.addEventListener('click', ()=>openReport(rep, rep.tabs[0].id));
+    listEl.appendChild(b);
+  }
+  markSidebar();
+}
+
+function markSidebar(){
+  for(const b of listEl.children)
+    b.setAttribute('aria-current', String(!!cur && b.dataset.date === cur.date));
+}
+
+/* Thanh tab đổi theo báo cáo đang chọn — kỳ nào có Campaign thì hiện, không có thì thôi. */
+function renderTabs(){
+  tabsEl.innerHTML = '';
+  if(!cur) return;
+  for(const t of cur.tabs){
+    const b = document.createElement('button');
+    b.className = 'tb';
+    b.type = 'button';
+    b.setAttribute('role','tab');
+    b.setAttribute('aria-selected', String(t.id === curTab));
+    b.textContent = t.label;
+    if(t.pill){
+      const p = document.createElement('span');
+      p.className = 'pill';
+      p.textContent = t.pill;
+      b.appendChild(p);
+    }
+    b.addEventListener('click', ()=>openReport(cur, t.id));
+    tabsEl.appendChild(b);
+  }
+}
+
+/* Report có nav tab riêng ở đầu trang — ẩn đi để không lặp với thanh tab của shell.
+   Cùng origin (cùng GitHub Pages) nên với tới được; nếu không thì bỏ qua, không vỡ gì. */
+frame.addEventListener('load', ()=>{
+  let doc;
+  try{ doc = frame.contentDocument; }catch(_){ return; }
+  if(!doc) return;
+
+  if(!doc.getElementById('__hub_style')){
+    const s = doc.createElement('style');
+    s.id = '__hub_style';
+    s.textContent = '#tabs,nav.tabs{display:none!important}';
+    doc.head.appendChild(s);
+  }
+
+  // Report hỗ trợ phím ←/→ đổi tab; đồng bộ ngược lại lên thanh tab của shell.
+  try{
+    frame.contentWindow.addEventListener('hashchange', ()=>{
+      const id = frame.contentWindow.location.hash.slice(1);
+      if(cur && id && id !== curTab && cur.tabs.some(t=>t.id===id)){
+        curTab = id;
+        renderTabs();
+        history.replaceState(null,'','#' + cur.date + '/' + id);
+      }
+    });
+  }catch(_){}
+});
+
+window.addEventListener('hashchange', ()=>{
+  const [d,t] = location.hash.slice(1).split('/');
+  const rep = REPORTS.find(r=>r.date===d);
+  if(rep && (rep !== cur || t !== curTab)) openReport(rep, t);
+});
+
+(async function boot(){
+  let data;
+  try{
+    const res = await fetch('manifest.json', {cache:'no-cache'});
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    data = await res.json();
+  }catch(err){
+    emptyEl.hidden = false;
+    emptyEl.innerHTML = '<div><b>Không đọc được manifest.json</b></div>' +
+      '<div style="font-size:12.5px">' + err.message + '</div>' +
+      '<div style="font-size:12.5px">Mở qua http (GitHub Pages hoặc local server), không mở bằng file://</div>';
+    return;
+  }
+
+  // Mới nhất lên đầu.
+  REPORTS = (data.reports || []).slice().sort((a,b)=> b.date.localeCompare(a.date));
+  if(!REPORTS.length){ emptyEl.hidden = false; return; }
+
+  renderSidebar();
+  const [d,t] = location.hash.slice(1).split('/');
+  openReport(REPORTS.find(r=>r.date===d) || REPORTS[0], t, {force:true});
+})();
+</script>
+</body>
+</html>
