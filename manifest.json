@@ -2,15 +2,51 @@
   "title": "PrepEdu — Growth Reports",
   "reports": [
     {
+      "date": "2026-08-25",
+      "label": "18/08 – 24/08",
+      "sub": "Seeding TW/HK + Global",
+      "path": "r/2026-08-25/index.html",
+      "tabs": [
+        {
+          "id": "overall",
+          "label": "Overall"
+        },
+        {
+          "id": "tw",
+          "label": "TW / HK"
+        },
+        {
+          "id": "global",
+          "label": "Global"
+        },
+        {
+          "id": "action",
+          "label": "Next Actions"
+        }
+      ]
+    },
+    {
       "date": "2026-08-18",
       "label": "11/08 – 17/08",
       "sub": "Seeding TW/HK + Global",
       "path": "r/2026-08-18/index.html",
       "tabs": [
-        { "id": "performance", "label": "📈 Seeding Performance" },
-        { "id": "pattern", "label": "🔍 Detailed Analysis" },
-        { "id": "operation", "label": "🛠 Operation" },
-        { "id": "action", "label": "✅ Next Action" }
+        {
+          "id": "performance",
+          "label": "📈 Seeding Performance"
+        },
+        {
+          "id": "pattern",
+          "label": "🔍 Detailed Analysis"
+        },
+        {
+          "id": "operation",
+          "label": "🛠 Operation"
+        },
+        {
+          "id": "action",
+          "label": "✅ Next Action"
+        }
       ]
     },
     {
@@ -19,9 +55,18 @@
       "sub": "Seeding TW/HK + Global",
       "path": "r/2026-08-11/index.html",
       "tabs": [
-        { "id": "performance", "label": "📈 Seeding Performance" },
-        { "id": "pattern", "label": "🔍 Detailed Analysis" },
-        { "id": "action", "label": "✅ Next Action" }
+        {
+          "id": "performance",
+          "label": "📈 Seeding Performance"
+        },
+        {
+          "id": "pattern",
+          "label": "🔍 Detailed Analysis"
+        },
+        {
+          "id": "action",
+          "label": "✅ Next Action"
+        }
       ]
     },
     {
@@ -30,11 +75,30 @@
       "sub": "Seeding & Campaign IELTS Lab",
       "path": "r/2026-07-28/index.html",
       "tabs": [
-        { "id": "performance", "label": "📈 Seeding Performance" },
-        { "id": "overview", "label": "🚀 Campaign — Tổng quan", "pill": "56%" },
-        { "id": "proxy", "label": "🌐 Proxy & Accounts", "pill": "67%" },
-        { "id": "automation", "label": "⚙️ Post Automation", "pill": "75%" },
-        { "id": "content", "label": "✍️ Content Production", "pill": "50%" }
+        {
+          "id": "performance",
+          "label": "📈 Seeding Performance"
+        },
+        {
+          "id": "overview",
+          "label": "🚀 Campaign — Tổng quan",
+          "pill": "56%"
+        },
+        {
+          "id": "proxy",
+          "label": "🌐 Proxy & Accounts",
+          "pill": "67%"
+        },
+        {
+          "id": "automation",
+          "label": "⚙️ Post Automation",
+          "pill": "75%"
+        },
+        {
+          "id": "content",
+          "label": "✍️ Content Production",
+          "pill": "50%"
+        }
       ]
     }
   ]
