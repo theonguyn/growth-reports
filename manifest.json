@@ -2,6 +2,30 @@
   "title": "PrepEdu — Growth Reports",
   "reports": [
     {
+      "date": "2026-09-08",
+      "label": "25/08 – 07/09",
+      "sub": "Seeding TW/HK + Global · 3 kỳ",
+      "path": "r/2026-09-08/index.html",
+      "tabs": [
+        {
+          "id": "tw",
+          "label": "TW / HK"
+        },
+        {
+          "id": "global",
+          "label": "Global"
+        },
+        {
+          "id": "lead",
+          "label": "View / Lead"
+        },
+        {
+          "id": "action",
+          "label": "Next Action"
+        }
+      ]
+    },
+    {
       "date": "2026-08-25",
       "label": "18/08 – 24/08",
       "sub": "Seeding TW/HK + Global",
