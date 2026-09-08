@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weekly Growth Report — 25/08 – 07/09/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#FBFBFA;--card:#fff;--line:#E6E6E3;--hair:#F1F1EF;
+  --ink:#16181D;--t2:#55595F;--t3:#8B9096;
+  --accent:#1F3D5C;--accent2:#7A8B9C;--soft:#F2F5F8;
+  --lead:#8A6A3B;--holi:#C9CFD6;
+}
+body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+
+.rh{background:var(--card);border-bottom:1px solid var(--line);padding:22px 36px 18px}
+.rh h1{font-size:17px;font-weight:700;letter-spacing:-.2px;margin-bottom:4px}
+.rh .meta{font-size:12px;color:var(--t3)}
+.rh .meta b{color:var(--t2);font-weight:600}
+.draft{display:inline-block;margin-left:10px;font-size:10px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;background:#FDF3E3;color:#8A6A3B;border:1px solid #EBDCC0;padding:2px 8px;border-radius:3px}
+
+.tabs{background:var(--card);border-bottom:1px solid var(--line);padding:0 36px;display:flex;gap:26px;position:sticky;top:0;z-index:30;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{padding:12px 0;border:none;background:none;cursor:pointer;font:inherit;font-size:13.5px;font-weight:500;color:var(--t3);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn.active{color:var(--ink);border-bottom-color:var(--ink);font-weight:600}
+
+.tc{display:none;padding:26px 36px 70px;max-width:1360px}
+.tc.active{display:block}
+.sec{margin-bottom:32px}
+.sec-t{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--t3);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.sec-t em{font-style:normal;text-transform:none;letter-spacing:0;font-weight:400;color:var(--t3);margin-left:8px}
+.note{font-size:11.5px;color:var(--t3);margin-top:9px}
+.note code{font-family:ui-monospace,Consolas,monospace;font-size:11px;background:var(--hair);padding:1px 5px;border-radius:3px}
+
+/* strip tổng 2 market */
+.strip{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:8px;background:var(--card);overflow:hidden}
+.strip .c{padding:15px 20px;border-right:1px solid var(--hair)}
+.strip .c:last-child{border-right:none}
+.strip .p{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.9px;color:var(--t3);margin-bottom:7px}
+.strip .p b{color:var(--ink)}
+.strip .v{font-size:23px;font-weight:700;letter-spacing:-.8px;font-variant-numeric:tabular-nums;line-height:1.1}
+.strip .sub{font-size:11.5px;color:var(--t2);margin-top:4px;font-variant-numeric:tabular-nums}
+.strip .sub span{color:var(--t3)}
+
+/* period block */
+.pblk{border:1px solid var(--line);border-radius:8px;background:var(--card);margin-bottom:18px;overflow:hidden}
+.pbh{padding:13px 20px;border-bottom:1px solid var(--hair);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.pbh .n{font-size:14px;font-weight:650;letter-spacing:-.1px}
+.pbh .d{font-size:11.5px;color:var(--t3)}
+.pbh .holi{font-size:10.5px;font-weight:600;color:var(--t2);background:var(--soft);border:1px solid var(--line);padding:2px 8px;border-radius:3px}
+.pbb{padding:16px 20px 18px}
+
+/* bar chart trong period */
+.bars{margin-bottom:18px}
+.plot{display:grid;gap:7px;align-items:end;height:132px;border-bottom:1px solid var(--line)}
+.col{height:100%;display:flex;flex-direction:column;justify-content:flex-end;position:relative;cursor:default}
+.bar{background:var(--accent);border-radius:2px 2px 0 0;min-height:2px}
+.bar.h{background:var(--holi)}
+.blab{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% + 4px);font-size:9.5px;font-weight:600;color:var(--t2);white-space:nowrap;font-variant-numeric:tabular-nums}
+.xax{display:grid;gap:7px;margin-top:6px}
+.xax span{font-size:10px;color:var(--t3);text-align:center;font-variant-numeric:tabular-nums}
+.xax span.h{color:var(--t2);font-weight:600}
+
+/* metric grid */
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));border-top:1px solid var(--hair)}
+.mg .m{padding:14px 0 4px;padding-right:16px}
+.mg .l{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.9px;color:var(--t3);margin-bottom:5px}
+.mg .v{font-size:25px;font-weight:700;letter-spacing:-.9px;line-height:1.1;font-variant-numeric:tabular-nums}
+.mg .b{font-size:11px;color:var(--t3);margin-top:3px;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+table{width:100%;border-collapse:collapse}
+thead th{background:var(--soft);color:var(--t2);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;padding:9px 13px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--line)}
+thead th.num{text-align:right}
+tbody tr{border-bottom:1px solid var(--hair)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:#FAFAF9}
+td{padding:8px 13px;color:var(--t2);font-size:12.5px;vertical-align:top}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.hl{font-weight:600;color:var(--ink)}
+td.mono{font-family:ui-monospace,Consolas,monospace;font-size:11.5px}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(31,61,92,.25)}
+a:hover{border-bottom-color:var(--accent)}
+.lk{font-size:11.5px;white-space:nowrap}
+.pill{display:inline-block;font-size:10px;font-weight:600;padding:1.5px 7px;border-radius:3px;background:var(--hair);color:var(--t2);white-space:nowrap}
+.sub-t{font-size:12px;font-weight:650;margin:20px 0 9px;color:var(--t2)}
+
+/* dual-panel line chart (tab 3) */
+.lc{border:1px solid var(--line);border-radius:8px;background:var(--card);padding:15px 20px 14px;margin-bottom:18px;position:relative}
+.lch{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:4px}
+.lct{font-size:13px;font-weight:650}
+.lcl{display:flex;gap:16px;font-size:11.5px;color:var(--t3)}
+.lcl i{width:16px;height:0;border-top:2px solid;display:inline-block;margin-right:6px;vertical-align:3px}
+.lcs{font-size:11.5px;color:var(--t3);margin-bottom:10px;font-variant-numeric:tabular-nums}
+.lcsvg{width:100%;display:block;overflow:visible}
+.tip{position:absolute;pointer-events:none;background:#16181D;color:#fff;border-radius:6px;padding:7px 10px;font-size:11.5px;line-height:1.5;white-space:nowrap;opacity:0;transition:opacity .1s;z-index:10;font-variant-numeric:tabular-nums}
+.tip b{font-weight:600}
+.tip .r{display:flex;align-items:center;gap:6px}
+.tip .r i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.ag{display:inline-block;font-size:10.5px;background:var(--hair);border-radius:3px;padding:1px 6px;margin:1px 4px 1px 0;white-space:nowrap}
+.ag i{font-style:normal;color:var(--t3);margin-left:3px}
+.mktb{margin-top:12px;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.mktb table{font-size:12px}
+.mktb thead th{background:#FBF8F1;font-size:9.5px}
+.mktb td{padding:6px 12px;font-size:12px}
+.empty{border:1px dashed var(--line);border-radius:8px;background:var(--card);padding:46px 24px;text-align:center;color:var(--t3);font-size:13px}
+.pend{border:1px dashed #EBDCC0;background:#FEFAF3;border-radius:8px;padding:14px 18px;font-size:12.5px;color:#7A5F33}
+.pend b{color:#5C4620}
+
+.rf{padding:18px 36px 44px;font-size:11.5px;color:var(--t3);max-width:1360px;line-height:1.7}
+
+@media(max-width:900px){
+  .strip{grid-template-columns:1fr}
+  .strip .c{border-right:none;border-bottom:1px solid var(--hair)}
+  .tc{padding:18px 16px 50px}
+  .tabs,.rh,.rf{padding-left:16px;padding-right:16px}
+  .blab{display:none}
+}
+@media print{.tabs{display:none}.tc{display:block!important;page-break-before:always}.tc:first-of-type{page-break-before:auto}body{background:#fff}}
+</style>
+</head>
+<body>
+
+<header class="rh">
+  <h1>Weekly Growth Report — Seeding TW/HK + Global</h1>
+  <div class="meta">Kỳ báo cáo: <b>25/08 – 07/09/2026</b> &nbsp;·&nbsp; Đối chiếu 3 kỳ: <b>18–24/08</b> · <b>25/08–02/09</b> (có lễ) · <b>03–07/09</b> &nbsp;·&nbsp; PIC: <b>Theo</b> &nbsp;·&nbsp; Cập nhật: <b>08/09/2026</b></div>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="tw">TW / HK</button>
+  <button class="tab-btn" data-tab="global">Global</button>
+  <button class="tab-btn" data-tab="lead">View / Lead</button>
+  <button class="tab-btn" data-tab="action">Next Action</button>
+</nav>
+
+<main>
+  <section class="tc active" id="tab-tw">
+    <div class="sec">
+      <div class="sec-t">Tổng 2 market <em>3 kỳ · TW/HK + Global</em></div>
+      <div class="strip" id="stripAll"></div>
+      <div class="note">Ba kỳ khác độ dài (7 / 9 / 5 ngày) nên dòng <b>Avg view/ngày</b> là chỉ số so sánh chính, không phải tổng view.</div>
+    </div>
+    <div class="sec">
+      <div class="sec-t">TW / HK — theo từng kỳ</div>
+      <div id="blkTW"></div>
+    </div>
+  </section>
+
+  <section class="tc" id="tab-global">
+    <div class="sec">
+      <div class="sec-t">Global — theo từng kỳ</div>
+      <div id="blkGL"></div>
+    </div>
+  </section>
+
+  <section class="tc" id="tab-lead">
+    <div class="sec">
+      <div class="sec-t">View / Lead theo ngày <em>01/08 – 07/09/2026 · 38 ngày</em></div>
+      <div id="leadCharts"></div>
+      <div class="note">Hai line vẽ chồng trên cùng một khung, trục dọc là <b>% so với ngày đỉnh của chính chỉ số đó</b> — nên khoảng hở giữa 2 line chính là ngày view và lead không đi cùng nhau. Chuẩn hoá theo % thay vì dùng hai trục số tuyệt đối để khoảng hở đó không phụ thuộc vào cách chọn thang đo. <b>Số tuyệt đối</b> của từng ngày xem ở tooltip khi trỏ chuột, hoặc ở bảng cuối tab. Các ngày <b>được khoanh và đánh số</b> là những ngày view và lead lệch nhau nhiều nhất trong kỳ — bảng ngay dưới mỗi chart chỉ ghi lại hiện tượng, chưa kết luận nguyên nhân.</div>
+    </div>
+    <div class="sec">
+      <div class="sec-t">Evidence — bài post tại các điểm bất thường</div>
+      <div class="pend"><b>Chờ bổ sung.</b> Các ngày được khoanh số trên 3 chart ở trên là chỗ view và lead lệch nhau nhiều nhất. Phần này sẽ đính ảnh bài post + link bài của từng ngày đó khi có.</div>
+    </div>
+    <div class="sec">
+      <div class="sec-t">Bảng ngày · view · lead</div>
+      <div id="leadTable"></div>
+    </div>
+  </section>
+
+  <section class="tc" id="tab-action">
+    <div class="sec">
+      <div class="sec-t">Next Action</div>
+      <div class="empty">Sẽ cập nhật sau buổi báo cáo.</div>
+    </div>
+  </section>
+</main>
+
+<footer class="rf">
+  <b>Nguồn dữ liệu:</b> Google Sheet <i>[INTL 2] Seeding Masterplan (latest)</i> — tab <code>TW_Report</code>, <code>TW_Listing</code>, <code>Global_Report</code>, <code>Global_Listing</code>.
+  <a href="https://docs.google.com/spreadsheets/d/1dYG0fncLfpqXXsUNOQwpS1-3k6T908axgTvuDKhu-Dg/edit" target="_blank" rel="noopener">Mở sheet ↗</a><br>
+  Số liệu đọc trực tiếp từ Post Database bằng <code>/export?format=csv&amp;gid</code>, tính theo từng dòng bài. Hướng Listing chỉ tính bài prep. Mỗi Post ID đều có link tới bài thật trên Threads.<br>
+  <b>Lead</b> = user đã tạo thành công tài khoản. Nguồn: <a href="https://docs.google.com/spreadsheets/d/1_k97ts60oNbBFkM6XDLbXCs1WNEEcxvLOVDzbNiBuM0/edit?gid=0" target="_blank" rel="noopener">sheet lead theo ngày ↗</a> — cột <code>TW + HK</code> cho TW/HK, cột <code>GLOBAL</code> cho Global; "Tổng 2 market" = cộng hai cột đó. Ngày <b>25/08</b> không có dòng trong sheet lead nên để trống, không tính bằng 0.
+</footer>
+
+<div class="tip" id="tip"></div>
+
+<script>
+const D = {"periods":[{"key":"p1","label":"18/08 – 24/08","days":7,"dates":["18/08","19/08","20/08","21/08","22/08","23/08","24/08"],"iso":["2026-08-18","2026-08-19","2026-08-20","2026-08-21","2026-08-22","2026-08-23","2026-08-24"],"m":{"all":{"t":{"n":43,"v":324713,"e":11430,"vir":10,"fl":15},"n":{"n":15,"v":149223,"e":5967,"vir":4,"fl":8},"l":{"n":28,"v":175490,"e":5463,"vir":6,"fl":7},"series":[26856,93886,60278,70916,48032,6216,18529],"lead":1950,"leadMiss":[]},"tw":{"t":{"n":23,"v":304091,"e":10977,"vir":10,"fl":4},"n":{"n":9,"v":146621,"e":5827,"vir":4,"fl":3},"l":{"n":14,"v":157470,"e":5150,"vir":6,"fl":1},"series":[23076,88200,56278,68200,47100,4037,17200],"lead":702,"leadMiss":[]},"gl":{"t":{"n":20,"v":20622,"e":453,"vir":0,"fl":11},"n":{"n":6,"v":2602,"e":140,"vir":0,"fl":5},"l":{"n":14,"v":18020,"e":313,"vir":0,"fl":6},"series":[3780,5686,4000,2716,932,2179,1329],"lead":1248,"leadMiss":[]}}},{"key":"p2","label":"25/08 – 02/09","days":9,"dates":["25/08","26/08","27/08","28/08","29/08","30/08","31/08","01/09","02/09"],"iso":["2026-08-25","2026-08-26","2026-08-27","2026-08-28","2026-08-29","2026-08-30","2026-08-31","2026-09-01","2026-09-02"],"m":{"all":{"t":{"n":47,"v":318597,"e":9949,"vir":7,"fl":33},"n":{"n":13,"v":108238,"e":4123,"vir":3,"fl":7},"l":{"n":34,"v":210359,"e":5826,"vir":4,"fl":26},"series":[65136,25278,63400,1798,23461,134971,1253,1192,2108],"lead":1767,"leadMiss":["25/08"]},"tw":{"t":{"n":23,"v":293425,"e":8432,"vir":7,"fl":12},"n":{"n":7,"v":92265,"e":2792,"vir":3,"fl":3},"l":{"n":16,"v":201160,"e":5640,"vir":4,"fl":9},"series":[55600,25278,63400,232,15338,133290,42,57,188],"lead":611,"leadMiss":["25/08"]},"gl":{"t":{"n":24,"v":25172,"e":1517,"vir":0,"fl":21},"n":{"n":6,"v":15973,"e":1331,"vir":0,"fl":4},"l":{"n":18,"v":9199,"e":186,"vir":0,"fl":17},"series":[9536,0,0,1566,8123,1681,1211,1135,1920],"lead":1156,"leadMiss":["25/08"]}}},{"key":"p3","label":"03/09 – 07/09","days":5,"dates":["03/09","04/09","05/09","06/09","07/09"],"iso":["2026-09-03","2026-09-04","2026-09-05","2026-09-06","2026-09-07"],"m":{"all":{"t":{"n":23,"v":69161,"e":2733,"vir":1,"fl":17},"n":{"n":12,"v":57897,"e":2443,"vir":1,"fl":8},"l":{"n":11,"v":11264,"e":290,"vir":0,"fl":9},"series":[44504,494,10010,9418,4735],"lead":808,"leadMiss":[]},"tw":{"t":{"n":11,"v":59759,"e":2473,"vir":1,"fl":6},"n":{"n":6,"v":56601,"e":2379,"vir":1,"fl":2},"l":{"n":5,"v":3158,"e":94,"vir":0,"fl":4},"series":[43800,166,9430,3063,3300],"lead":245,"leadMiss":[]},"gl":{"t":{"n":12,"v":9402,"e":260,"vir":0,"fl":11},"n":{"n":6,"v":1296,"e":64,"vir":0,"fl":6},"l":{"n":6,"v":8106,"e":196,"vir":0,"fl":5},"series":[704,328,580,6355,1435],"lead":563,"leadMiss":[]}}}],"daily":{"dates":["01/08","02/08","03/08","04/08","05/08","06/08","07/08","08/08","09/08","10/08","11/08","12/08","13/08","14/08","15/08","16/08","17/08","18/08","19/08","20/08","21/08","22/08","23/08","24/08","25/08","26/08","27/08","28/08","29/08","30/08","31/08","01/09","02/09","03/09","04/09","05/09","06/09","07/09"],"iso":["2026-08-01","2026-08-02","2026-08-03","2026-08-04","2026-08-05","2026-08-06","2026-08-07","2026-08-08","2026-08-09","2026-08-10","2026-08-11","2026-08-12","2026-08-13","2026-08-14","2026-08-15","2026-08-16","2026-08-17","2026-08-18","2026-08-19","2026-08-20","2026-08-21","2026-08-22","2026-08-23","2026-08-24","2026-08-25","2026-08-26","2026-08-27","2026-08-28","2026-08-29","2026-08-30","2026-08-31","2026-09-01","2026-09-02","2026-09-03","2026-09-04","2026-09-05","2026-09-06","2026-09-07"],"all":[0,0,60800,7200,9400,481,127032,6759,4922,97098,20338,138010,396400,74000,56072,114059,116313,26856,93886,60278,70916,48032,6216,18529,65136,25278,63400,1798,23461,134971,1253,1192,2108,44504,494,10010,9418,4735],"tw":[0,0,60800,7200,9400,0,126600,6100,1980,92600,19000,128600,388100,45600,11841,102120,104500,23076,88200,56278,68200,47100,4037,17200,55600,25278,63400,232,15338,133290,42,57,188,43800,166,9430,3063,3300],"gl":[0,0,0,0,0,481,432,659,2942,4498,1338,9410,8300,28400,44231,11939,11813,3780,5686,4000,2716,932,2179,1329,9536,0,0,1566,8123,1681,1211,1135,1920,704,328,580,6355,1435]},"top":{"p1_all":[{"id":"tw152","d":"20/08","who":"shu.0429.shu","dir":"Normal","v":48800,"e":812,"lk":"https://www.threads.com/share/D5H4SCgPV/"},{"id":"list141","d":"21/08","who":"twacc19","dir":"Listing","v":34900,"e":1214,"lk":"https://www.threads.com/share/Gn6Hskxro/"},{"id":"tw151","d":"19/08","who":"pipi.tw11","dir":"Normal","v":33100,"e":2056,"lk":"https://www.threads.com/share/L0zW3l1Sq/"},{"id":"tw149","d":"21/08","who":"jasper.0112","dir":"Normal","v":30700,"e":1681,"lk":"https://www.threads.com/share/E4CYr9a8j/"},{"id":"hk142","d":"19/08","who":"marcus.speaks_jul","dir":"Normal","v":26600,"e":993,"lk":"https://www.threads.com/share/FzIayDNoq/"}],"p1_tw":[{"id":"tw152","d":"20/08","who":"shu.0429.shu","dir":"Normal","v":48800,"e":812,"lk":"https://www.threads.com/share/D5H4SCgPV/"},{"id":"list141","d":"21/08","who":"twacc19","dir":"Listing","v":34900,"e":1214,"lk":"https://www.threads.com/share/Gn6Hskxro/"},{"id":"tw151","d":"19/08","who":"pipi.tw11","dir":"Normal","v":33100,"e":2056,"lk":"https://www.threads.com/share/L0zW3l1Sq/"},{"id":"tw149","d":"21/08","who":"jasper.0112","dir":"Normal","v":30700,"e":1681,"lk":"https://www.threads.com/share/E4CYr9a8j/"},{"id":"hk142","d":"19/08","who":"marcus.speaks_jul","dir":"Normal","v":26600,"e":993,"lk":"https://www.threads.com/share/FzIayDNoq/"}],"p1_gl":[{"id":"gblist059","d":"19/08","who":"glacc08","dir":"Listing","v":3800,"e":85,"lk":"https://www.threads.com/share/FdyxYgrsB/"},{"id":"gblist055","d":"18/08","who":"glacc08","dir":"Listing","v":2700,"e":27,"lk":"https://www.threads.com/share/HbY0OgUHy/"},{"id":"gblist063","d":"20/08","who":"glacc08","dir":"Listing","v":1700,"e":30,"lk":"https://www.threads.com/share/KOOXyNAQS/"},{"id":"gblist067","d":"21/08","who":"glacc08","dir":"Listing","v":1700,"e":36,"lk":"https://www.threads.com/share/Iwr-_q7B_/"},{"id":"gblist075","d":"23/08","who":"glacc08","dir":"Listing","v":1700,"e":18,"lk":"https://www.threads.com/share/IShjPDtOn/"}],"p2_all":[{"id":"list167","d":"30/08","who":"twacc19","dir":"Listing","v":126000,"e":3374,"lk":"https://www.threads.com/@vanessa.sayhi/post/Dcp7Rq_EVQy?xmt=AQG0nmMQafv-xt1XmFM_fey-rqXzdhntZmqVgBuMjzB6u9247T8TAF_1WZuAwy3RGLqdk3M"},{"id":"tw150","d":"27/08","who":"xinxin.hereisxx","dir":"Normal","v":38500,"e":863,"lk":"https://www.threads.com/@xinxin.hereisxx/post/DciaviGmD0L"},{"id":"tw147","d":"25/08","who":"cloudyy.0203","dir":"Normal","v":30700,"e":1322,"lk":"https://www.threads.com/share/GTx-JIkQ-/"},{"id":"tw153","d":"29/08","who":"derek_11.03","dir":"Normal","v":15300,"e":497,"lk":"https://www.threads.com/@derek_11.03/post/Dcn00CZFOi1"},{"id":"list153","d":"25/08","who":"twacc19","dir":"Listing","v":15200,"e":429,"lk":"https://www.threads.com/share/E5kj-mgTg/"}],"p2_tw":[{"id":"list167","d":"30/08","who":"twacc19","dir":"Listing","v":126000,"e":3374,"lk":"https://www.threads.com/@vanessa.sayhi/post/Dcp7Rq_EVQy?xmt=AQG0nmMQafv-xt1XmFM_fey-rqXzdhntZmqVgBuMjzB6u9247T8TAF_1WZuAwy3RGLqdk3M"},{"id":"tw150","d":"27/08","who":"xinxin.hereisxx","dir":"Normal","v":38500,"e":863,"lk":"https://www.threads.com/@xinxin.hereisxx/post/DciaviGmD0L"},{"id":"tw147","d":"25/08","who":"cloudyy.0203","dir":"Normal","v":30700,"e":1322,"lk":"https://www.threads.com/share/GTx-JIkQ-/"},{"id":"tw153","d":"29/08","who":"derek_11.03","dir":"Normal","v":15300,"e":497,"lk":"https://www.threads.com/@derek_11.03/post/Dcn00CZFOi1"},{"id":"list153","d":"25/08","who":"twacc19","dir":"Listing","v":15200,"e":429,"lk":"https://www.threads.com/share/E5kj-mgTg/"}],"p2_gl":[{"id":"gb020","d":"25/08","who":"mads_dothings","dir":"Normal","v":7500,"e":666,"lk":"https://www.threads.com/share/FBOCvhKj_/"},{"id":"gb023","d":"29/08","who":"mads_dothings","dir":"Normal","v":6800,"e":593,"lk":"https://www.threads.com/@mads_dothings/post/Dcn0qgDGzcZ"},{"id":"gblist082","d":"25/08","who":"glacc08","dir":"Listing","v":1300,"e":42,"lk":"https://www.threads.com/share/Fu-V1TxlH/"},{"id":"gblist098","d":"29/08","who":"glacc08","dir":"Listing","v":962,"e":15,"lk":"https://www.threads.com/@jackosbeachbum/post/Dcn1LPJkf4E"},{"id":"gblist106","d":"31/08","who":"glacc08","dir":"Listing","v":871,"e":6,"lk":"https://www.threads.com/@jackosbeachbum/post/DcsEuKKiaFF"}],"p3_all":[{"id":"hk161","d":"03/09","who":"_minchai686","dir":"Normal","v":43800,"e":1893,"lk":"https://www.threads.com/share/BBLHb97yXg/"},{"id":"hk162","d":"05/09","who":"wordsbyjaehyeon","dir":"Normal","v":9400,"e":383,"lk":"https://www.threads.com/@wordsbyjaehyeon/post/Dc6OY_bAHkp"},{"id":"gblist124","d":"06/09","who":"glacc08","dir":"Listing","v":4700,"e":120,"lk":"https://www.threads.com/@jackosbeachbum/post/Dc7hnCfAqc8"},{"id":"list185","d":"06/09","who":"twacc19","dir":"Listing","v":3000,"e":92,"lk":"https://www.threads.com/@vanessa.sayhi/post/Dc70VFCEZ6M?xmt=AQG0nmMQafv-xt1XmFM_fey-rqXzdhntZmqVgBuMjzB6u9247T8TAF_1WZuAwy3RGLqdk3M"},{"id":"tw168","d":"07/09","who":"jo_joanna4a","dir":"Normal","v":1900,"e":61,"lk":"https://www.threads.com/@jo_joanna4a/post/Dc-xT3hG-Fi"}],"p3_tw":[{"id":"hk161","d":"03/09","who":"_minchai686","dir":"Normal","v":43800,"e":1893,"lk":"https://www.threads.com/share/BBLHb97yXg/"},{"id":"hk162","d":"05/09","who":"wordsbyjaehyeon","dir":"Normal","v":9400,"e":383,"lk":"https://www.threads.com/@wordsbyjaehyeon/post/Dc6OY_bAHkp"},{"id":"list185","d":"06/09","who":"twacc19","dir":"Listing","v":3000,"e":92,"lk":"https://www.threads.com/@vanessa.sayhi/post/Dc70VFCEZ6M?xmt=AQG0nmMQafv-xt1XmFM_fey-rqXzdhntZmqVgBuMjzB6u9247T8TAF_1WZuAwy3RGLqdk3M"},{"id":"tw168","d":"07/09","who":"jo_joanna4a","dir":"Normal","v":1900,"e":61,"lk":"https://www.threads.com/@jo_joanna4a/post/Dc-xT3hG-Fi"},{"id":"tw156","d":"07/09","who":"cloudyy.0203","dir":"Normal","v":1400,"e":30,"lk":"https://www.threads.com/share/GYNkWSvzi/"}],"p3_gl":[{"id":"gblist124","d":"06/09","who":"glacc08","dir":"Listing","v":4700,"e":120,"lk":"https://www.threads.com/@jackosbeachbum/post/Dc7hnCfAqc8"},{"id":"gblist125","d":"06/09","who":"glacc08","dir":"Listing","v":770,"e":33,"lk":"https://www.threads.com/@jackosbeachbum/post/Dc8fRGJjRHz"},{"id":"gb031","d":"06/09","who":"minaielts","dir":"Normal","v":752,"e":29,"lk":"https://www.threads.com/@minaielts/post/Dc8-IOnCOWX"},{"id":"gblist118","d":"03/09","who":"glacc08","dir":"Listing","v":704,"e":15,"lk":"https://www.threads.com/@jackosbeachbum/post/Dc1TKD2DcqX?xmt=AQG0cttwE4s2-OcmlQCUaciKdxo0g7rvVjSNHbJTEZJu10AILs9EunajnUdg1GLV3NYIGvk"},{"id":"gblist127","d":"07/09","who":"glacc08","dir":"Listing","v":698,"e":19,"lk":"https://www.threads.com/@jackosbeachbum/post/Dc_VNRqjbCV"}]},"lead":{"all":[90,92,326,187,107,282,238,165,282,244,239,197,208,387,268,271,228,251,217,277,298,383,236,288,null,260,207,179,146,189,350,234,202,161,172,150,141,184],"tw":[28,37,59,48,31,54,51,63,75,98,93,72,71,156,104,99,88,90,73,102,113,146,76,102,null,90,69,62,52,66,137,70,65,44,57,44,44,56],"gl":[62,55,267,139,76,228,187,102,207,146,146,125,137,231,164,172,140,161,144,175,185,237,160,186,null,170,138,117,94,123,213,164,137,117,115,106,97,128]},"leadMissing":["25/08"],"angles":{"tw":[[],[],[{"a":"Listing TOEIC","n":1,"v":40500},{"a":"Listing IELTS","n":1,"v":20300}],[{"a":"Listing TOEIC","n":1,"v":3700},{"a":"Listing IELTS","n":1,"v":3500}],[{"a":"Listing IELTS","n":1,"v":5700},{"a":"Listing TOEIC","n":1,"v":3700}],[],[{"a":"Listing IELTS","n":1,"v":91900},{"a":"Emotion","n":1,"v":18200},{"a":"Listing TOEIC","n":1,"v":16500}],[{"a":"Listing TOEIC","n":1,"v":3700},{"a":"Listing IELTS","n":1,"v":1400},{"a":"Review","n":1,"v":1000}],[{"a":"Listing IELTS","n":1,"v":904},{"a":"Tips","n":1,"v":554},{"a":"Listing TOEIC","n":1,"v":522}],[{"a":"Listing IELTS","n":1,"v":70900},{"a":"Listing TOEIC","n":1,"v":20600},{"a":"Review","n":1,"v":1100}],[{"a":"Listing TOEIC","n":1,"v":12500},{"a":"Listing IELTS","n":1,"v":4200},{"a":"Discussion","n":1,"v":2300}],[{"a":"Tips","n":1,"v":117000},{"a":"Listing IELTS","n":1,"v":6100},{"a":"Listing TOEIC","n":1,"v":5500}],[{"a":"Review","n":1,"v":349000},{"a":"Listing IELTS","n":1,"v":36300},{"a":"Listing TOEIC","n":1,"v":2800}],[{"a":"Listing IELTS","n":1,"v":17500},{"a":"Tips","n":1,"v":17100},{"a":"Listing TOEIC","n":1,"v":11000}],[{"a":"Listing TOEIC","n":1,"v":7200},{"a":"Listing IELTS","n":1,"v":4000},{"a":"Review","n":1,"v":641}],[{"a":"Listing TOEIC","n":1,"v":69100},{"a":"Listing IELTS","n":1,"v":32900},{"a":"Tips","n":1,"v":120}],[{"a":"Listing IELTS","n":1,"v":76800},{"a":"Listing TOEIC","n":1,"v":26600},{"a":"Review","n":1,"v":1100}],[{"a":"Listing IELTS","n":1,"v":16500},{"a":"Listing TOEIC","n":1,"v":6100},{"a":"Review","n":1,"v":476}],[{"a":"Emotion","n":1,"v":33100},{"a":"Question","n":1,"v":26600},{"a":"Listing TOEIC","n":1,"v":23600},{"a":"Listing IELTS","n":1,"v":4900}],[{"a":"Emotion","n":1,"v":48800},{"a":"Listing TOEIC","n":1,"v":4200},{"a":"Listing IELTS","n":1,"v":3200},{"a":"Review","n":1,"v":78}],[{"a":"Listing TOEIC","n":1,"v":34900},{"a":"Review","n":1,"v":30700},{"a":"Listing IELTS","n":1,"v":2600}],[{"a":"Listing IELTS","n":1,"v":24300},{"a":"Listing TOEIC","n":1,"v":18000},{"a":"Review","n":1,"v":4800}],[{"a":"Listing TOEIC","n":1,"v":3300},{"a":"Listing IELTS","n":1,"v":570},{"a":"Tips","n":1,"v":167}],[{"a":"Listing IELTS","n":1,"v":11500},{"a":"Listing TOEIC","n":1,"v":3800},{"a":"Question","n":1,"v":1900}],[{"a":"Emotion","n":1,"v":30700},{"a":"Listing TOEIC","n":1,"v":15200},{"a":"Listing IELTS","n":1,"v":9700}],[{"a":"Listing TOEIC","n":1,"v":15200},{"a":"Listing IELTS","n":1,"v":9700},{"a":"Discussion","n":1,"v":378}],[{"a":"Contrast","n":1,"v":38500},{"a":"Listing TOEIC","n":1,"v":15200},{"a":"Listing IELTS","n":1,"v":9700}],[{"a":"Review","n":1,"v":232}],[{"a":"Tips","n":1,"v":15300},{"a":"Listing IELTS","n":1,"v":19},{"a":"Listing TOEIC","n":1,"v":19}],[{"a":"Listing IELTS","n":1,"v":126000},{"a":"Tips","n":1,"v":7100},{"a":"Listing TOEIC","n":1,"v":190}],[{"a":"Listing TOEIC","n":1,"v":31},{"a":"Listing IELTS","n":1,"v":11}],[{"a":"Listing IELTS","n":1,"v":29},{"a":"Listing TOEIC","n":1,"v":28}],[{"a":"Listing IELTS","n":1,"v":70},{"a":"Listing TOEIC","n":1,"v":63},{"a":"Review","n":1,"v":55}],[{"a":"Question","n":1,"v":43800}],[{"a":"Review","n":1,"v":78},{"a":"Listing IELTS","n":1,"v":70},{"a":"Listing TOEIC","n":1,"v":18}],[{"a":"Tips","n":1,"v":9400},{"a":"Listing IELTS","n":1,"v":30}],[{"a":"Listing IELTS","n":1,"v":3000},{"a":"Listing TOEIC","n":1,"v":40},{"a":"Review","n":1,"v":23}],[{"a":"Review","n":1,"v":1900},{"a":"Tips","n":1,"v":1400}]],"gl":[[],[],[],[],[],[{"a":"Listing IELTS","n":2,"v":420},{"a":"Emotion","n":1,"v":61}],[{"a":"Listing IELTS","n":2,"v":325},{"a":"Review","n":1,"v":107}],[{"a":"Listing IELTS","n":2,"v":416},{"a":"Emotion","n":1,"v":243}],[{"a":"Emotion","n":1,"v":2200},{"a":"Listing IELTS","n":2,"v":742}],[{"a":"Listing IELTS","n":2,"v":4231},{"a":"Review","n":1,"v":267}],[{"a":"Listing IELTS","n":2,"v":1302},{"a":"Contrast","n":1,"v":36}],[{"a":"Emotion","n":1,"v":7100},{"a":"Listing IELTS","n":2,"v":2310}],[{"a":"Listing IELTS","n":2,"v":7100},{"a":"Tips","n":1,"v":1200}],[{"a":"Listing IELTS","n":2,"v":20800},{"a":"Review","n":1,"v":7600}],[{"a":"Listing IELTS","n":2,"v":43900},{"a":"Contrast","n":1,"v":331}],[{"a":"Listing IELTS","n":2,"v":11600},{"a":"Tips","n":1,"v":339}],[{"a":"Listing IELTS","n":2,"v":11600},{"a":"Review","n":1,"v":213}],[{"a":"Listing IELTS","n":2,"v":3496},{"a":"Review","n":1,"v":284}],[{"a":"Listing IELTS","n":2,"v":4800},{"a":"Emotion","n":1,"v":886}],[{"a":"Listing IELTS","n":2,"v":3000},{"a":"Discussion","n":1,"v":1000}],[{"a":"Listing IELTS","n":2,"v":2700},{"a":"Tips","n":1,"v":16}],[{"a":"Listing IELTS","n":2,"v":932}],[{"a":"Listing IELTS","n":2,"v":2014},{"a":"Tips","n":1,"v":165}],[{"a":"Listing IELTS","n":2,"v":1078},{"a":"Tips","n":1,"v":251}],[{"a":"Tips","n":1,"v":7500},{"a":"Listing IELTS","n":4,"v":2036}],[],[],[{"a":"Listing IELTS","n":4,"v":1359},{"a":"Review","n":1,"v":207}],[{"a":"Tips","n":1,"v":6800},{"a":"Listing IELTS","n":2,"v":1323}],[{"a":"Listing IELTS","n":2,"v":917},{"a":"Review","n":1,"v":764}],[{"a":"Listing IELTS","n":2,"v":1118},{"a":"Review","n":1,"v":93}],[{"a":"Listing IELTS","n":2,"v":1135}],[{"a":"Listing IELTS","n":2,"v":1311},{"a":"Tips","n":1,"v":609}],[{"a":"Listing IELTS","n":1,"v":704}],[{"a":"Review","n":1,"v":328}],[{"a":"Listing IELTS","n":1,"v":552},{"a":"Review","n":1,"v":28}],[{"a":"Listing IELTS","n":2,"v":5470},{"a":"Review","n":3,"v":885}],[{"a":"Listing IELTS","n":2,"v":1380},{"a":"Review","n":1,"v":55}]]}};
+const LEAD = D.lead;   /* {all:[],tw:[],gl:[]} — null ở ngày không có dữ liệu lead */
+const HOLI = ['2026-08-29','2026-08-30','2026-08-31','2026-09-01','2026-09-02'];
+/* Điểm được khoanh trên chart — nhãn chỉ mô tả hiện tượng, không nêu nguyên nhân */
+const MARKS = {
+  all:[{d:'01/08',t:'Không có bài đăng nhưng vẫn có lead (01/08: 90 · 02/08: 92)'},
+       {d:'13/08',t:'View đỉnh cả kỳ · lead chỉ ở mức trung bình'},
+       {d:'14/08',t:'Lead đỉnh cả kỳ · view chỉ khoảng 1/5 ngày đỉnh'},
+       {d:'22/08',t:'Lead gần đỉnh · view thấp'},
+       {d:'31/08',t:'View gần như bằng 0 · lead vẫn ở mức cao'}],
+  tw: [{d:'07/08',t:'View cao · lead thấp nhất trong nhóm ngày view cao'},
+       {d:'13/08',t:'View đỉnh cả kỳ · lead dưới một nửa ngày đỉnh'},
+       {d:'14/08',t:'Lead đỉnh cả kỳ · view chỉ khoảng 1/8 ngày đỉnh'},
+       {d:'22/08',t:'Lead gần đỉnh · view thấp'},
+       {d:'31/08',t:'View gần như bằng 0 · lead vẫn ở mức cao'}],
+  gl: [{d:'03/08',t:'Không có bài đăng · lead đỉnh cả kỳ'},
+       {d:'06/08',t:'View rất thấp · lead ở mức cao'},
+       {d:'15/08',t:'View đỉnh cả kỳ · lead chỉ ở mức trung bình'},
+       {d:'22/08',t:'View rất thấp · lead gần đỉnh'},
+       {d:'26/08',t:'Không có bài đăng · lead vẫn cao (26/08: 170 · 27/08: 138)'}]
+};
+
+const f = n => (n==null?'—':Number(n).toLocaleString('vi-VN'));
+const kk = n => n>=1000 ? Math.round(n/1000)+'K' : String(n);
+
+/* ── tabs ── */
+const tabs=[...document.querySelectorAll('.tab-btn')];
+function go(n,push){const t=document.getElementById('tab-'+n);if(!t)return;
+ tabs.forEach(b=>b.classList.toggle('active',b.dataset.tab===n));
+ document.querySelectorAll('.tc').forEach(c=>c.classList.remove('active'));t.classList.add('active');
+ if(push&&location.hash!=='#'+n)history.replaceState(null,'','#'+n);window.scrollTo({top:0,behavior:'instant'});}
+tabs.forEach(b=>b.addEventListener('click',()=>go(b.dataset.tab,true)));
+window.addEventListener('hashchange',()=>go(location.hash.slice(1),false));
+if(location.hash)go(location.hash.slice(1),false);
+
+/* ── strip tổng 2 market ── */
+document.getElementById('stripAll').innerHTML = D.periods.map(p=>{
+  const m=p.m.all.t;
+  return '<div class="c"><div class="p">'+(p.key.toUpperCase())+' · <b>'+p.label+'</b> · '+p.days+' ngày</div>'
+   +'<div class="v">'+f(Math.round(m.v/p.days))+'</div>'
+   +'<div class="sub"><span>avg view/ngày</span> · tổng '+f(m.v)+' view · '+m.n+' bài · '+f(m.e)+' eng · '+f(p.m.all.lead)+' lead</div></div>';
+}).join('');
+
+/* ── period blocks ── */
+function metric(label,total,nm,ls,fmt){
+  const F = fmt||f;
+  return '<div class="m"><div class="l">'+label+'</div><div class="v">'+F(total)+'</div>'
+       + '<div class="b">'+(nm===null?'&nbsp;':'Normal '+F(nm)+' &nbsp;·&nbsp; Listing '+F(ls))+'</div></div>';
+}
+function barChart(p,series,max){
+  const cols=series.map((v,i)=>{
+    const holi=HOLI.includes(p.iso[i]);
+    return '<div class="col" title="'+p.dates[i]+' — '+f(v)+' view'+(holi?' (nghỉ lễ)':'')+'">'
+      +'<span class="blab">'+kk(v)+'</span>'
+      +'<div class="bar'+(holi?' h':'')+'" style="height:'+Math.max(2,v/max*100)+'%"></div></div>';
+  }).join('');
+  const g='grid-template-columns:repeat('+series.length+',1fr)';
+  return '<div class="bars"><div class="plot" style="'+g+'">'+cols+'</div>'
+    +'<div class="xax" style="'+g+'">'+p.dates.map((d,i)=>'<span class="'+(HOLI.includes(p.iso[i])?'h':'')+'">'+d+'</span>').join('')+'</div></div>';
+}
+function topTable(key){
+  const rows=(D.top[key]||[]);
+  if(!rows.length) return '';
+  return '<div class="sub-t">Top 5 bài theo view</div><div class="tw"><table>'
+   +'<thead><tr><th>Post ID</th><th>Ngày</th><th>Account</th><th>Hướng</th><th class="num">Views</th><th class="num">Eng</th><th>Link</th></tr></thead><tbody>'
+   +rows.map(r=>'<tr><td class="hl">'+r.id+'</td><td>'+r.d+'</td><td class="mono">'+(r.who?'@'+r.who:'—')+'</td>'
+     +'<td><span class="pill">'+r.dir+'</span></td><td class="num hl">'+f(r.v)+'</td><td class="num">'+f(r.e)+'</td>'
+     +'<td>'+(r.lk?'<a class="lk" href="'+r.lk+'" target="_blank" rel="noopener">Xem ↗</a>':'—')+'</td></tr>').join('')
+   +'</tbody></table></div>';
+}
+function renderMarket(mk,elId){
+  const max=Math.max(...D.periods.flatMap(p=>p.m[mk].series),1);
+  document.getElementById(elId).innerHTML = D.periods.map(p=>{
+    const m=p.m[mk], holi=p.iso.some(d=>HOLI.includes(d));
+    return '<div class="pblk"><div class="pbh"><span class="n">'+p.key.toUpperCase()+' · '+p.label+'</span>'
+      +'<span class="d">'+p.days+' ngày</span>'
+      +(holi?'<span class="holi">Nghỉ lễ 29/08 – 02/09</span>':'')+'</div>'
+      +'<div class="pbb">'+barChart(p,m.series,max)
+      +'<div class="mg">'
+      + metric('Total view',m.t.v,m.n.v,m.l.v)
+      + metric('Avg view / ngày',Math.round(m.t.v/p.days),null)
+      + metric('Total post',m.t.n,m.n.n,m.l.n)
+      + metric('Total eng',m.t.e,m.n.e,m.l.e)
+      + metric('Viral &gt;10K',m.t.vir,m.n.vir,m.l.vir)
+      + metric('Flop &lt;1K',m.t.fl,m.n.fl,m.l.fl)
+      + metric('Lead',m.lead,null)
+      +'</div>'+(m.leadMiss&&m.leadMiss.length?'<div class="note">Thiếu dữ liệu lead ngày: <b>'+m.leadMiss.join(', ')+'</b> — tổng lead của kỳ này tính trên '+(p.days-m.leadMiss.length)+'/'+p.days+' ngày.</div>':'')+topTable(p.key+'_'+mk)+'</div></div>';
+  }).join('');
+}
+renderMarket('tw','blkTW');
+renderMarket('gl','blkGL');
+
+/* ── dual-panel line chart: view (trên) + lead (dưới), chung trục ngày ── */
+const tip=document.getElementById('tip');
+function lineChart(title,viewArr,leadArr,mkey){
+  const W=1000,PT=16,HP=176,XL=22,H=PT+HP+XL;
+  const n=viewArr.length, sx=k=> n>1 ? PT+k*(W-2*PT)/(n-1) : W/2, bw=(W-2*PT)/(n-1);
+  const mxV=Math.max(...viewArr,1);
+  const has=Array.isArray(leadArr)&&leadArr.some(v=>v!=null);
+  const mxL=has?Math.max(...leadArr.filter(v=>v!=null),1):1;
+  const y=pct=>PT+HP-pct*HP;
+
+  let g='';
+  /* vung nghi le */
+  D.daily.iso.forEach((d,k)=>{ if(HOLI.includes(d))
+    g+='<rect x="'+(sx(k)-bw/2)+'" y="'+PT+'" width="'+bw+'" height="'+HP+'" fill="#F4F6F8"/>'; });
+  /* grid 0-100% */
+  [0,.25,.5,.75,1].forEach(v=>{const yy=y(v);
+    g+='<line x1="'+PT+'" x2="'+(W-PT)+'" y1="'+yy+'" y2="'+yy+'" stroke="#EFEFEC" stroke-width="1"/>'
+      +'<text x="0" y="'+(yy-3)+'" font-size="9" fill="#8B9096">'+Math.round(v*100)+'%</text>'; });
+  /* line */
+  const draw=(arr,mx,color)=>{
+    /* ngat line tai cac ngay khong co du lieu, khong noi thang qua lo hong */
+    const segs=[]; let cur=[];
+    arr.forEach((v,k)=>{ if(v==null){ if(cur.length)segs.push(cur); cur=[]; } else cur.push(sx(k)+','+y(v/mx)); });
+    if(cur.length)segs.push(cur);
+    return segs.map(s=>s.length>1
+        ? '<polyline fill="none" stroke="'+color+'" stroke-width="2" stroke-linejoin="round" points="'+s.join(' ')+'"/>' : '').join('')
+      + arr.map((v,k)=>v==null?'':'<circle cx="'+sx(k)+'" cy="'+y(v/mx)+'" r="2.4" fill="'+color+'"/>').join('');
+  };
+  /* dai mo cho ngay duoc khoanh - ve truoc line */
+  const marks=(MARKS[mkey]||[]).map(m=>({...m,k:D.daily.dates.indexOf(m.d)})).filter(m=>m.k>=0)
+    .sort((a,b)=>a.k-b.k).map((m,idx)=>({...m,no:idx+1}));
+  let bands='';
+  marks.forEach(m=>{ bands+='<rect x="'+(sx(m.k)-bw/2)+'" y="'+PT+'" width="'+bw+'" height="'+HP+'" fill="#F6F1E6"/>'; });
+  g = bands + g;
+  g+=draw(viewArr,mxV,'#1F3D5C');
+  if(has) g+=draw(leadArr,mxL,'#B8873B');
+  else g+='<text x="'+(W/2)+'" y="'+(PT+HP/2)+'" text-anchor="middle" font-size="12" fill="#B0B4B9">Chưa có dữ liệu lead</text>';
+  /* khoanh tron diem duoc danh dau + badge so */
+  marks.forEach(m=>{
+    g+='<circle cx="'+sx(m.k)+'" cy="'+y(viewArr[m.k]/mxV)+'" r="6.5" fill="none" stroke="#1F3D5C" stroke-width="1.4"/>';
+    if(has&&leadArr[m.k]!=null)
+      g+='<circle cx="'+sx(m.k)+'" cy="'+y(leadArr[m.k]/mxL)+'" r="6.5" fill="none" stroke="#B8873B" stroke-width="1.4"/>';
+    g+='<circle cx="'+sx(m.k)+'" cy="8" r="7.5" fill="#16181D"/>'
+      +'<text x="'+sx(m.k)+'" y="11.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">'+m.no+'</text>';
+  });
+  /* nhan truc x */
+  D.daily.dates.forEach((d,k)=>{ if(k%3!==0 && !(k===n-1 && (n-1)%3>=2))return;
+    g+='<text x="'+sx(k)+'" y="'+(H-6)+'" text-anchor="middle" font-size="9" fill="#8B9096">'+d+'</text>'; });
+  /* hit + crosshair */
+  D.daily.dates.forEach((d,k)=>{
+    g+='<rect class="hit" data-i="'+k+'" x="'+(sx(k)-bw/2)+'" y="0" width="'+bw+'" height="'+(PT+HP)+'" fill="transparent"/>'; });
+  g+='<line class="cross" x1="0" x2="0" y1="'+PT+'" y2="'+(PT+HP)+'" stroke="#16181D" stroke-width="1" stroke-dasharray="3 3" opacity="0"/>';
+
+  const el=document.createElement('div');
+  el.className='lc';
+  el.innerHTML='<div class="lch"><span class="lct">'+title+'</span>'
+    +'<span class="lcl"><span><i style="border-color:#1F3D5C"></i>View / ngày</span>'
+    +'<span style="'+(has?'':'opacity:.45')+'"><i style="border-color:#B8873B"></i>Lead / ngày</span></span></div>'
+    +'<div class="lcs">Trục dọc = <b>% so với ngày đỉnh của chính chỉ số đó</b> · view đỉnh '+f(mxV)
+    +(has?' · lead đỉnh '+f(mxL):' · lead: chưa có dữ liệu')
+    +' · tổng '+f(viewArr.reduce((a,b)=>a+b,0))+' view'
+    +(has?' / '+f(leadArr.reduce((a,b)=>a+(b||0),0))+' lead':'')
+    +' · vùng xám = nghỉ lễ 29/08–02/09</div>'
+    +'<svg class="lcsvg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" style="height:'+H+'px">'+g+'</svg>'
+    +(marks.length?'<div class="mktb"><table><thead><tr><th style="width:34px">#</th><th>Ngày</th>'
+      +'<th class="num">View</th><th class="num">Lead</th><th class="num">Lead / 1K view</th><th>Hiện tượng</th></tr></thead><tbody>'
+      +marks.map(m=>'<tr><td class="hl">'+m.no+'</td><td class="hl">'+m.d+'</td>'
+        +'<td class="num">'+f(viewArr[m.k])+'</td>'
+        +'<td class="num">'+(has&&leadArr[m.k]!=null?f(leadArr[m.k]):'—')+'</td>'
+        +'<td class="num">'+(has&&leadArr[m.k]!=null&&viewArr[m.k]?(leadArr[m.k]/viewArr[m.k]*1000).toFixed(2):'—')+'</td>'
+        +'<td>'+m.t+'</td></tr>').join('')
+      +'</tbody></table></div>':'');
+
+  const cross=el.querySelector('.cross');
+  el.querySelectorAll('.hit').forEach(r=>{
+    r.addEventListener('mousemove',ev=>{
+      const k=+r.dataset.i;
+      cross.setAttribute('x1',sx(k));cross.setAttribute('x2',sx(k));cross.setAttribute('opacity','.35');
+      const pv=Math.round(viewArr[k]/mxV*100), pl=has&&leadArr[k]!=null?Math.round(leadArr[k]/mxL*100):null;
+      tip.innerHTML='<b>'+D.daily.dates[k]+'</b>'+(HOLI.includes(D.daily.iso[k])?' <span style="opacity:.6">· nghỉ lễ</span>':'')
+        +'<div class="r"><i style="background:#1F3D5C"></i>View <b>'+f(viewArr[k])+'</b> <span style="opacity:.6">· '+pv+'% đỉnh</span></div>'
+        +'<div class="r"><i style="background:#B8873B"></i>Lead <b>'+(has?f(leadArr[k]):'—')+'</b>'+(pl!=null?' <span style="opacity:.6">· '+pl+'% đỉnh</span>':'')+'</div>';
+      tip.style.opacity='1';
+      tip.style.position='fixed';
+      tip.style.left=Math.min(window.innerWidth-tip.offsetWidth-10,ev.clientX+14)+'px';
+      tip.style.top=Math.max(8,ev.clientY-tip.offsetHeight-12)+'px';
+    });
+    r.addEventListener('mouseleave',()=>{tip.style.opacity='0';cross.setAttribute('opacity','0');});
+  });
+  return el;
+}
+const LC=document.getElementById('leadCharts');
+[['Tổng 2 market','all'],['TW / HK','tw'],['Global','gl']].forEach(([t,k])=>{
+  LC.appendChild(lineChart(t, D.daily[k], LEAD?LEAD[k]:null, k));
+});
+
+/* ── bảng ngày · view · lead ── */
+function angCell(list){
+  if(!list||!list.length) return '<span style="color:#B0B4B9">—</span>';
+  return list.map(x=>'<span class="ag">'+x.a+' ×'+x.n+'<i>'+(x.v>=1000?Math.round(x.v/1000)+'K':x.v)+'</i></span>').join('');
+}
+(function(){
+  const has=!!LEAD;
+  let h='<div class="tw"><table><thead><tr><th>Ngày</th>'
+   +'<th class="num">View — tổng</th><th class="num">View — TW/HK</th><th class="num">View — Global</th>'
+   +'<th class="num">Lead — tổng</th><th class="num">Lead / 1K view</th>'
+   +'<th>Angle bài TW/HK</th><th>Angle bài Global</th></tr></thead><tbody>';
+  D.daily.dates.forEach((d,i)=>{
+    const va=D.daily.all[i], le=has?LEAD.all[i]:null;
+    h+='<tr'+(HOLI.includes(D.daily.iso[i])?' style="background:#FAFAF9"':'')+'>'
+      +'<td class="hl">'+d+(HOLI.includes(D.daily.iso[i])?' <span class="pill">lễ</span>':'')+'</td>'
+      +'<td class="num hl">'+f(va)+'</td><td class="num">'+f(D.daily.tw[i])+'</td><td class="num">'+f(D.daily.gl[i])+'</td>'
+      +'<td class="num">'+(has?f(le):'—')+'</td>'
+      +'<td class="num">'+(has&&le!=null&&va?(le/va*1000).toFixed(2):'—')+'</td>'
+      +'<td>'+angCell(D.angles.tw[i])+'</td><td>'+angCell(D.angles.gl[i])+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  h+='<div class="note">Cột angle: mỗi chip là <b>tên angle × số bài</b>, số mờ phía sau là <b>tổng view</b> của các bài cùng angle hôm đó. Bài Listing không có cột angle trong sheet nên ghi theo chủ đề (<b>Listing IELTS</b> / <b>Listing TOEIC</b>). Ngày trống = không đăng bài.</div>';
+  document.getElementById('leadTable').innerHTML=h;
+})();
+</script>
+</body>
+</html>
